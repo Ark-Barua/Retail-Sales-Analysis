@@ -2,7 +2,8 @@
 **Project:** Project 1: Retail Sales Analysis & Data Science Intelligence  
 **Role:** Senior Data Analyst & Data Scientist (Google Standard — 8+ Years Experience)  
 **Methodology:** Google BI & Data Governance, IBCS (International Business Communication Standards), Machine Learning & Statistical Inference  
-**Tooling Stack:** **Python** (`scikit-learn`, `scipy`, `pandas`, `numpy`), **Jupyter**, **SQL** (SQLite / BigQuery / PostgreSQL), **Excel**, **Power BI** (DAX Tabular Model), **Modern Web Application** (HTML5 / Vanilla CSS / Interactive JS)
+**Tooling Stack:** **Python** (`scikit-learn`, `scipy`, `pandas`, `numpy`), **Jupyter Notebook**, **SQL** (SQLite / BigQuery / PostgreSQL), **Excel**, **Power BI** (DAX Tabular Model), **Modern Web Application** (HTML5 / Vanilla CSS / Interactive JS)  
+**Live GitHub Repository:** [https://github.com/Ark-Barua/Retail-Sales-Analysis](https://github.com/Ark-Barua/Retail-Sales-Analysis)
 
 ---
 
@@ -25,77 +26,44 @@ This repository bridges **Enterprise Business Intelligence** with **Advanced Dat
 
 ## 2. Interactive Dashboard (Exact UI Match & Live Capabilities)
 
-The web dashboard in [`dashboard/`](file:///c:/Users/ASUS/Desktop/Data%20Analytics%20Projects/dashboard/) replicates the exact layout, colors, and IBCS standards from executive Google reporting:
+The web dashboard in [`dashboard/`](dashboard/) replicates the exact layout, colors, and IBCS standards from executive Google reporting:
 
+![Executive Sales Reporting Dashboard](docs/images/dashboard_overview.png)
+
+### Key Visual & Analytical Features:
 * **Dual Waterfall Bridge Charts:** Actual vs Previous Year (600 → Bridge +400 → 800 with +65.5% bracket) and Actual vs Plan (800 → Bridge +50 → 800 with +1.0% marker).
 * **12-Month IBCS Column Chart:** Jan to Dec base bars (650 to 1,000) with stacked variance blocks (+42%, -11%, +24%, -30%, etc.).
 * **Regional & Category Tables:** Horizontal bars, diverging green/red $\Delta$ PL bars, and $\Delta$ PL% lollipop pins.
-* **Dynamic Custom CSV Upload:** Drag & drop any custom CSV file to dynamically recalculate the entire dashboard in real time!
-* **Data Science & ML Drawer:** Interactive modal showcasing 2023 sales forecasts, RFM customer clusters, feature importance, and Welch's T-test hypothesis results.
-* **Excel Simulator ("Edit Data"):** Modify any cell to simulate the active Excel data link.
-* **Download Sample Template:** Ready-to-use CSV template [`data/retail_sales_template.csv`](file:///c:/Users/ASUS/Desktop/Data%20Analytics%20Projects/data/retail_sales_template.csv).
+* **View Mode Toggle:** Switch between **Template Mockup Labels** (`Region 1`, `Category 1`, `Text Here`) and **Enterprise Business Names** (`North America West`, `Electronics & Laptops`).
+* **Live Excel Simulator ("Edit Data"):** Modify any cell to simulate the active Excel data link.
 
 ---
 
-## 3. Project Architecture
+## 3. Dynamic Custom CSV Ingestion (No Hardcoded Data)
 
-```
-c:\Users\ASUS\Desktop\Data Analytics Projects\
-│
-├── .github/workflows/deploy.yml             # GitHub Actions for automated GitHub Pages live hosting
-├── vercel.json                              # 1-click Vercel deployment configuration
-├── netlify.toml                             # 1-click Netlify deployment configuration
-├── DEPLOYMENT_GUIDE.md                      # Live hosting guide (GitHub Pages, Vercel, Netlify)
-│
-├── data/
-│   ├── raw/retail_sales_raw.csv             # Raw ERP extract with messy anomalies (11,663 rows)
-│   ├── processed/retail_sales_clean.csv     # Deduplicated, clean golden record (11,491 rows)
-│   ├── processed/forecast_2023.csv          # Q1-Q2 2023 monthly forecasts with 95% CI
-│   ├── processed/customer_rfm_clusters.csv  # K-Means customer RFM clusters & segments
-│   ├── processed/ml_feature_importance.csv  # Random forest profit driver feature importance
-│   ├── retail_sales_template.csv            # Downloadable sample template for custom CSV upload
-│   ├── Retail_Sales_Model.xlsx              # Formatted Excel model with formulas & pivot tabs
-│   └── retail_sales.db                      # SQLite DB with indexed tables for SQL queries
-│
-├── notebooks/
-│   └── retail_data_science_modeling.ipynb   # Complete Data Science & ML portfolio notebook
-│
-├── scripts/
-│   ├── generate_retail_data.py              # Synthetic data pipeline & Excel workbook builder
-│   ├── data_science_pipeline.py             # CLI ML pipeline (accepts custom CSV via --input)
-│   └── build_notebook.py                    # Notebook generator script
-│
-├── sql/
-│   ├── 01_schema_and_staging.sql            # Table DDL, constraints & staging schema
-│   ├── 02_data_cleaning_and_validation.sql  # Automated deduplication & quality assertions
-│   ├── 03_monthly_sales_trends.sql          # MoM growth (LAG), YoY & 3M rolling averages
-│   ├── 04_product_and_category_performance.sql # Category vs Plan, Gross Margin & Pareto 80/20
-│   ├── 05_regional_performance.sql          # Regional quota attainment & margin profile
-│   └── 06_executive_kpis_and_drivers.sql    # Customer economics & discount margin dilution
-│
-├── dashboard/
-│   ├── index.html                           # Executive dashboard markup
-│   ├── styles.css                           # Pixel-perfect IBCS styling & responsive grid
-│   └── app.js                              # Dynamic state, Custom CSV engine & ML drawer
-│
-├── powerbi/
-│   ├── measures.dax                         # 25+ production-grade DAX measures
-│   └── data_model_guide.md                  # Kimball Star Schema model documentation
-│
-└── docs/
-    ├── assumptions_and_data_dictionary.md   # ASC 606 revenue recognition & data dictionary
-    ├── sql_analysis_report.md               # Executed query results, tables & takeaways
-    └── actionable_recommendations.md        # C-Suite memorandum with 5 quantified recommendations
-```
+The dashboard includes a full client-side CSV processing engine allowing any recruiter, stakeholder, or user to drag-and-drop their own datasets:
+
+![Custom CSV Drag and Drop Ingestion](docs/images/custom_csv_upload.png)
+
+* **Drag-and-Drop & File Picker:** Upload any raw sales transaction CSV.
+* **Intelligent Auto-Mapping:** Automatically identifies Date, Revenue/Sales, Cost/Profit, Category, and Region columns.
+* **Real-Time Recalculation:** Instantly updates monthly bars, regional tables, category tables, and variance pins.
+* **Active Dataset Banner:** Displays parsed row count, total revenue, and a 1-click **"Reset to Image Default Benchmark"** button.
+* **Downloadable Template:** Ready-to-use template [`data/retail_sales_template.csv`](data/retail_sales_template.csv).
+* **Pre-loaded Scenarios:** Quick-toggle between *Master Clean Log (11,491 records)*, *Image Benchmark Default*, and *High-Growth Tech Scenario*.
 
 ---
 
-## 4. Data Science & Machine Learning Workflow
+## 4. Data Science & Machine Learning Intelligence
+
+A dedicated Data Science suite trained on transaction telemetry to answer predictive and strategic commercial questions:
+
+![Data Science and Machine Learning Intelligence](docs/images/data_science_ml.png)
 
 ### 4.1 Time Series Sales Forecasting (Holt-Winters / Trend + Seasonality)
 * Predicts monthly net revenue for 2023 with 95% prediction intervals.
 * Identifies a **Q1 2023 revenue trajectory of $2.33M** (+18.5% YoY expansion over Q1 2022).
-* Run via CLI:
+* Run via CLI on any custom CSV:
   ```bash
   python scripts/data_science_pipeline.py --input data/processed/retail_sales_clean.csv
   ```
@@ -122,27 +90,76 @@ Attribution ranking on operating profit margin:
 
 ---
 
-## 5. Live Deployment Options
+## 5. Executive Actionable Recommendations
 
-Detailed instructions in [`DEPLOYMENT_GUIDE.md`](file:///c:/Users/ASUS/Desktop/Data%20Analytics%20Projects/DEPLOYMENT_GUIDE.md):
-1. **GitHub Pages (Automated):** Push to GitHub (`main` branch) and enable Pages under Settings > Pages > GitHub Actions.
-2. **Vercel:** 1-Click Import using the included [`vercel.json`](file:///c:/Users/ASUS/Desktop/Data%20Analytics%20Projects/vercel.json).
-3. **Netlify:** Drag & drop or Git import using the included [`netlify.toml`](file:///c:/Users/ASUS/Desktop/Data%20Analytics%20Projects/netlify.toml).
+Comprehensive 5-point strategic memorandum for leadership:
+
+![Executive Actionable Recommendations](docs/images/actionable_recommendations.png)
+
+1. **Remediate EMEA Central (Region 3) Deficit (-15.0% / -$29K in Dec):** Reallocate 30% of marketing to direct digital sales; introduce localized Net-60/90 enterprise terms (Projected impact: **+$180K to +$240K** annualized).
+2. **Transition Category 7 to SaaS Recurring ARR:** Sunset lumpy perpetual licenses; bundle software into Category 8 subscription care plans (Projected impact: **+$110,000** gross profit; **+180 bps** margin expansion).
+3. **Forward-Stage Inventory to APAC (+21.0%) and LATAM (+17.9%):** Shift 15% of safety stock from California to Tokyo and São Paulo hubs to eliminate stockouts (Projected impact: **+$320,000** in uncaptured revenue).
+4. **Automate CPQ Discount Governance:** Implement strict approval gates (rep ≤5%, Director ≤10%, VP Finance >10%) to halt margin dilution (Projected impact: **+$145,000+** preserved gross profit).
+5. **Smooth Summer Seasonality (-47% Dip):** Launch Mid-Year Enterprise Hardware Refresh campaign in July/August and anchor 2023 budgets to empirical seasonality curves (Projected impact: **+$250,000** summer top-line lift).
 
 ---
 
-## 6. Git Setup & Push Instructions
+## 6. Repository Architecture
 
-```bash
-# 1. Initialize local repository
-git init
-git add .
-git commit -m "feat: complete enterprise retail sales analysis, ML models, and interactive dashboard"
-
-# 2. Add your GitHub repository remote
-git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-
-# 3. Rename branch to main and push
-git branch -M main
-git push -u origin main
 ```
+Ark-Barua/Retail-Sales-Analysis
+├── .github/workflows/deploy.yml             # GitHub Actions for automated GitHub Pages live hosting
+├── vercel.json                              # 1-click Vercel deployment configuration
+├── netlify.toml                             # 1-click Netlify deployment configuration
+├── DEPLOYMENT_GUIDE.md                      # Live hosting guide (GitHub Pages, Vercel, Netlify)
+│
+├── data/
+│   ├── raw/retail_sales_raw.csv             # Raw ERP extract with anomalies (11,663 rows)
+│   ├── processed/retail_sales_clean.csv     # Deduplicated, clean golden record (11,491 rows)
+│   ├── processed/forecast_2023.csv          # Q1-Q2 2023 monthly forecasts with 95% CI
+│   ├── processed/customer_rfm_clusters.csv  # K-Means customer RFM clusters & segments
+│   ├── processed/ml_feature_importance.csv  # Random forest profit driver feature importance
+│   ├── retail_sales_template.csv            # Downloadable sample template for custom CSV upload
+│   ├── Retail_Sales_Model.xlsx              # Formatted Excel model with formulas & pivot tabs
+│   └── retail_sales.db                      # SQLite DB with indexed tables for SQL queries
+│
+├── notebooks/
+│   └── retail_data_science_modeling.ipynb   # Complete Data Science & ML portfolio notebook
+│
+├── scripts/
+│   ├── data_science_pipeline.py             # CLI ML pipeline (accepts custom CSV via --input)
+│   ├── generate_retail_data.py              # Synthetic data pipeline & Excel workbook builder
+│   └── build_notebook.py                    # Notebook generator script
+│
+├── sql/
+│   ├── 01_schema_and_staging.sql            # Table DDL, constraints & staging schema
+│   ├── 02_data_cleaning_and_validation.sql  # Automated deduplication & quality assertions
+│   ├── 03_monthly_sales_trends.sql          # MoM growth (LAG), YoY & 3M rolling averages
+│   ├── 04_product_and_category_performance.sql # Category vs Plan, Gross Margin & Pareto 80/20
+│   ├── 05_regional_performance.sql          # Regional quota attainment & margin profile
+│   └── 06_executive_kpis_and_drivers.sql    # Customer economics & discount margin dilution
+│
+├── dashboard/
+│   ├── index.html                           # Executive dashboard markup
+│   ├── styles.css                           # Pixel-perfect IBCS styling & responsive grid
+│   └── app.js                              # Dynamic state, Custom CSV engine & ML drawer
+│
+├── powerbi/
+│   ├── measures.dax                         # 25+ production-grade DAX measures
+│   └── data_model_guide.md                  # Kimball Star Schema model documentation
+│
+└── docs/
+    ├── images/                              # High-resolution screenshots of all UI workflows
+    ├── assumptions_and_data_dictionary.md   # ASC 606 revenue recognition & data dictionary
+    ├── sql_analysis_report.md               # Executed query results, tables & takeaways
+    └── actionable_recommendations.md        # C-Suite memorandum with 5 quantified recommendations
+```
+
+---
+
+## 7. Live Deployment Instructions
+
+Detailed step-by-step instructions in [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md):
+1. **GitHub Pages (Automated):** Go to **Settings > Pages > Build and deployment > Source: GitHub Actions**. The CI/CD workflow automatically publishes the dashboard to `https://ark-barua.github.io/Retail-Sales-Analysis/`.
+2. **Vercel:** 1-Click Import using the included [`vercel.json`](vercel.json).
+3. **Netlify:** Drag & drop or Git import using the included [`netlify.toml`](netlify.toml).
