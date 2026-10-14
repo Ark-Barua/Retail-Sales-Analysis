@@ -170,3 +170,10 @@ Ark-Barua/Retail-Sales-Analysis
 * **GitHub Pages (Automated):** Go to **Settings > Pages > Build and deployment > Source: GitHub Actions**. The CI/CD workflow automatically publishes the dashboard to `https://ark-barua.github.io/Retail-Sales-Analysis/`.
 * **Vercel:** 1-Click Import using the included [`vercel.json`](vercel.json).
 * See [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md) for full deployment details.
+
+---
+
+## 8. License
+
+This project is open-source and licensed under the [MIT License](LICENSE) &copy; 2026 Ark Barua.
+
