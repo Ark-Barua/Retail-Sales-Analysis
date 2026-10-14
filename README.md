@@ -6,7 +6,7 @@
 **🌐 Live Interactive Dashboard:** [https://heartfelt-macaron-5f7810.netlify.app](https://heartfelt-macaron-5f7810.netlify.app)  
 **📂 GitHub Repository:** [https://github.com/Ark-Barua/Retail-Sales-Analysis](https://github.com/Ark-Barua/Retail-Sales-Analysis)  
 
-[![Live Demo on Netlify](https://img.shields.io/badge/Live_Demo-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://heartfelt-macaron-5f7810.netlify.app)
+[![Live Demo on Netlify](https://img.shields.io/badge/Live_Demo-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://retail-sales-analysis.netlify.app/)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ark-Barua/Retail-Sales-Analysis)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
