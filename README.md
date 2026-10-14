@@ -31,7 +31,7 @@ This repository bridges **Enterprise Business Intelligence** with **Advanced Dat
 
 ## 2. Interactive Dashboard (Exact UI Match & Live Capabilities)
 
-> 🚀 **Live Interactive Web Application:** **[https://heartfelt-macaron-5f7810.netlify.app](https://heartfelt-macaron-5f7810.netlify.app)**  
+> 🚀 **Live Interactive Web Application:** **[https://heartfelt-macaron-5f7810.netlify.app](https://retail-sales-analysis.netlify.app/)**
 > *(Supports real-time Custom CSV Drag & Drop Ingestion, ML Intelligence Drawer, and Live Excel Data Simulation)*
 
 The web dashboard in [`dashboard/`](dashboard/) replicates the exact layout, colors, and IBCS standards from executive Google reporting:
