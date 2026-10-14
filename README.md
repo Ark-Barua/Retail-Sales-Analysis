@@ -3,7 +3,7 @@
 **Role:** Senior Data Analyst & Data Scientist (Google Standard — 8+ Years Experience)  
 **Methodology:** Google BI & Data Governance, IBCS (International Business Communication Standards), Machine Learning & Statistical Inference  
 **Tooling Stack:** **Python** (`scikit-learn`, `scipy`, `pandas`, `numpy`), **Jupyter Notebook**, **SQL** (SQLite / BigQuery / PostgreSQL), **Excel**, **Power BI** (DAX Tabular Model), **Modern Web Application** (HTML5 / Vanilla CSS / Interactive JS)  
-**🌐 Live Interactive Dashboard:** [https://heartfelt-macaron-5f7810.netlify.app](https://heartfelt-macaron-5f7810.netlify.app)  
+**🌐 Live Interactive Dashboard:** [https://heartfelt-macaron-5f7810.netlify.app](https://retail-sales-analysis.netlify.app/)
 **📂 GitHub Repository:** [https://github.com/Ark-Barua/Retail-Sales-Analysis](https://github.com/Ark-Barua/Retail-Sales-Analysis)  
 
 [![Live Demo on Netlify](https://img.shields.io/badge/Live_Demo-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://retail-sales-analysis.netlify.app/)
