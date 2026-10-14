@@ -3,7 +3,12 @@
 **Role:** Senior Data Analyst & Data Scientist (Google Standard — 8+ Years Experience)  
 **Methodology:** Google BI & Data Governance, IBCS (International Business Communication Standards), Machine Learning & Statistical Inference  
 **Tooling Stack:** **Python** (`scikit-learn`, `scipy`, `pandas`, `numpy`), **Jupyter Notebook**, **SQL** (SQLite / BigQuery / PostgreSQL), **Excel**, **Power BI** (DAX Tabular Model), **Modern Web Application** (HTML5 / Vanilla CSS / Interactive JS)  
-**Live GitHub Repository:** [https://github.com/Ark-Barua/Retail-Sales-Analysis](https://github.com/Ark-Barua/Retail-Sales-Analysis)
+**🌐 Live Interactive Dashboard:** [https://heartfelt-macaron-5f7810.netlify.app](https://heartfelt-macaron-5f7810.netlify.app)  
+**📂 GitHub Repository:** [https://github.com/Ark-Barua/Retail-Sales-Analysis](https://github.com/Ark-Barua/Retail-Sales-Analysis)  
+
+[![Live Demo on Netlify](https://img.shields.io/badge/Live_Demo-Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://heartfelt-macaron-5f7810.netlify.app)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Ark-Barua/Retail-Sales-Analysis)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 ---
 
@@ -25,6 +30,9 @@ This repository bridges **Enterprise Business Intelligence** with **Advanced Dat
 ---
 
 ## 2. Interactive Dashboard (Exact UI Match & Live Capabilities)
+
+> 🚀 **Live Interactive Web Application:** **[https://heartfelt-macaron-5f7810.netlify.app](https://heartfelt-macaron-5f7810.netlify.app)**  
+> *(Supports real-time Custom CSV Drag & Drop Ingestion, ML Intelligence Drawer, and Live Excel Data Simulation)*
 
 The web dashboard in [`dashboard/`](dashboard/) replicates the exact layout, colors, and IBCS standards from executive Google reporting:
 
@@ -158,8 +166,7 @@ Ark-Barua/Retail-Sales-Analysis
 ---
 
 ## 7. Live Deployment Instructions
-
-Detailed step-by-step instructions in [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md):
-1. **GitHub Pages (Automated):** Go to **Settings > Pages > Build and deployment > Source: GitHub Actions**. The CI/CD workflow automatically publishes the dashboard to `https://ark-barua.github.io/Retail-Sales-Analysis/`.
-2. **Vercel:** 1-Click Import using the included [`vercel.json`](vercel.json).
-3. **Netlify:** Drag & drop or Git import using the included [`netlify.toml`](netlify.toml).
+* **Netlify (Active Production Deployment):** Live at **[https://heartfelt-macaron-5f7810.netlify.app](https://heartfelt-macaron-5f7810.netlify.app)**.
+* **GitHub Pages (Automated):** Go to **Settings > Pages > Build and deployment > Source: GitHub Actions**. The CI/CD workflow automatically publishes the dashboard to `https://ark-barua.github.io/Retail-Sales-Analysis/`.
+* **Vercel:** 1-Click Import using the included [`vercel.json`](vercel.json).
+* See [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md) for full deployment details.
