@@ -1,7 +1,6 @@
 # Live Deployment Architecture & Hosting Guide
 **Project:** Enterprise Retail Sales Analysis & Predictive Performance Model  
-**Author:** Senior Data Analyst & Data Scientist (Google Standard)
-
+**Author:** Ark Barua
 ---
 
 ## 1. Deployment Overview
