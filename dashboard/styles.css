@@ -1381,3 +1381,278 @@ body {
   margin-top: 4px;
 }
 
+/* ==========================================================================
+   INTERACTIVE WORKABLE UI EXTENSIONS (IBCS Compliant)
+   ========================================================================== */
+
+/* Period Dropdown Container & Menu */
+.filter-dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-dropdown {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.filter-dropdown:hover {
+  background-color: #E2E8F0;
+  border-color: #CBD5E1;
+}
+
+.filter-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  min-width: 175px;
+  max-height: 310px;
+  overflow-y: auto;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+  z-index: 1000;
+  padding: 4px 0;
+  animation: fadeInDown 0.15s ease;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.filter-dropdown-item {
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #1E293B;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.filter-dropdown-item:hover {
+  background: #F1F5F9;
+  color: #0A3663;
+}
+
+.filter-dropdown-item.active {
+  background: #EBF5FF;
+  color: #0A3663;
+  font-weight: 700;
+}
+
+.filter-dropdown-item .badge-count {
+  font-size: 10px;
+  color: #64748B;
+  background: #E2E8F0;
+  padding: 1px 5px;
+  border-radius: 10px;
+}
+
+.filter-dropdown-divider {
+  height: 1px;
+  background: #E2E8F0;
+  margin: 4px 0;
+}
+
+/* Plan Metric Toggle Subpanel Dropdown */
+.subpanel-title-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.clickable-title {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
+}
+
+.clickable-title:hover {
+  color: #0A3663;
+}
+
+.plan-metric-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 180px;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  z-index: 900;
+  padding: 4px 0;
+  animation: fadeInDown 0.15s ease;
+}
+
+.plan-metric-menu .menu-item {
+  padding: 7px 12px;
+  font-size: 11px;
+  color: #334155;
+  cursor: pointer;
+  transition: background 0.12s;
+  text-align: left;
+}
+
+.plan-metric-menu .menu-item:hover {
+  background: #F1F5F9;
+  color: #0A3663;
+}
+
+.plan-metric-menu .menu-item.active {
+  background: #EBF5FF;
+  color: #0A3663;
+  font-weight: 700;
+}
+
+/* Table Column Sorting Headers */
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: color 0.15s;
+}
+
+.sortable-header:hover {
+  color: #0A3663;
+  text-decoration: underline;
+}
+
+.sort-arrow {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0A3663;
+}
+
+.sort-indicator {
+  font-size: 9px;
+  color: #94A3B8;
+}
+
+/* Monthly Chart Interactive Column Selection */
+.month-bar-slot {
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.month-bar-slot:hover {
+  transform: translateY(-2px);
+}
+
+.month-bar-slot.active-month .ac-base-bar {
+  box-shadow: 0 0 0 2px #3182CE;
+  filter: brightness(1.2);
+}
+
+.month-bar-slot.active-month .month-axis-label {
+  font-weight: 800;
+  color: #0A3663;
+  border-bottom: 2px solid #0A3663;
+}
+
+/* Footer Clickable Legends & Status Filters */
+.clickable-legend {
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: all 0.15s ease;
+}
+
+.clickable-legend:hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.clickable-legend.active-filter {
+  background: #E2E8F0;
+  outline: 1.5px solid #4A5568;
+}
+
+.btn-clear-legend-filter {
+  margin-left: 8px;
+  font-size: 10px;
+  padding: 2px 8px;
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.btn-clear-legend-filter:hover {
+  background: #FECACA;
+}
+
+.clickable-subtext {
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.clickable-subtext:hover {
+  color: #2563EB;
+  text-decoration: underline;
+}
+
+/* Window Control Diagnostics Icon */
+.window-control-icon {
+  cursor: pointer;
+  padding: 3px 4px;
+  border-radius: 3px;
+  transition: background 0.15s;
+}
+
+.window-control-icon:hover {
+  background: #E2E8F0;
+}
+
+/* Status Badges */
+.status-tag {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 3px;
+}
+
+.status-ok {
+  background: #DEF7EC;
+  color: #03543F;
+  border: 1px solid #BCF0DA;
+}
+
+.status-warn {
+  background: #FEF08A;
+  color: #713F12;
+  border: 1px solid #FDE047;
+}
+
+/* Waterfall Chart Bridge Negative / Deficit */
+.bar-bridge-negative {
+  background-color: var(--color-deficit-red);
+}
+
+.wf-indicator-bracket.val-neg .bracket-line {
+  border-right-color: var(--color-deficit-red);
+  border-top-color: var(--color-deficit-red);
+  border-bottom-color: var(--color-deficit-red);
+}
+
+.wf-indicator-bracket.val-neg .bracket-value {
+  color: #C53030;
+}
+
+.wf-indicator-bracket.val-neg .bracket-horizontal-marker {
+  background-color: var(--color-deficit-red);
+}
+
+

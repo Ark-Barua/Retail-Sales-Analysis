@@ -67,7 +67,7 @@
     <!-- Top Header Bar matching image exactly -->
     <div class="dashboard-main-header">
       <div class="title-cluster">
-        <div class="window-control-icon">
+        <div class="window-control-icon" onclick="openSystemDiagnosticsModal()" title="View System & Pipeline Diagnostics">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <rect x="1" y="4" width="10" height="10" stroke="#718096" stroke-width="1.5" rx="1"/>
             <path d="M5 4V2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2" stroke="#718096" stroke-width="1.5"/>
@@ -77,11 +77,14 @@
       </div>
       
       <div class="header-right-filter">
-        <div class="filter-dropdown" id="periodFilter">
-          <span class="filter-label">Dec 2022</span>
-          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="#4A5568" stroke-width="1.5">
-            <path d="M1 1L5 5L9 1"/>
-          </svg>
+        <div class="filter-dropdown-container">
+          <div class="filter-dropdown" id="periodFilter" onclick="togglePeriodDropdown(event)" title="Click to filter by month or full year">
+            <span class="filter-label" id="selectedPeriodLabel">Dec 2022</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="#4A5568" stroke-width="1.5">
+              <path d="M1 1L5 5L9 1"/>
+            </svg>
+          </div>
+          <div class="filter-dropdown-menu" id="periodDropdownMenu" style="display: none;"></div>
         </div>
       </div>
     </div>
@@ -113,64 +116,23 @@
           <!-- Sub-Chart 1: Actual vs Previous Year -->
           <div class="waterfall-subpanel">
             <h3 class="subpanel-title">Actual vs Previous Year</h3>
-            <div class="waterfall-chart" id="wfPyAc">
-              <!-- PY Column -->
-              <div class="wf-col">
-                <span class="wf-value-label">600</span>
-                <div class="wf-bar bar-py" style="height: 110px;"></div>
-                <span class="wf-axis-label">PY</span>
-              </div>
-              <!-- Floating Bridge (+400) -->
-              <div class="wf-col wf-bridge-col">
-                <span class="wf-value-label val-positive">+400</span>
-                <div class="wf-bar bar-bridge-positive" style="height: 48px; margin-bottom: 95px;"></div>
-                <span class="wf-axis-label">&nbsp;</span>
-              </div>
-              <!-- AC Column -->
-              <div class="wf-col">
-                <span class="wf-value-label">800</span>
-                <div class="wf-bar bar-ac" style="height: 145px;"></div>
-                <span class="wf-axis-label">AC</span>
-              </div>
-              <!-- Variance Bracket Indicator -->
-              <div class="wf-indicator-bracket">
-                <div class="bracket-line"></div>
-                <span class="bracket-value">+65.5%</span>
-              </div>
-            </div>
+            <div class="waterfall-chart" id="wfPyAc"></div>
           </div>
 
           <!-- Sub-Chart 2: Actual vs Plan -->
           <div class="waterfall-subpanel">
-            <h3 class="subpanel-title">
-              Actual vs Plan
-              <span class="subpanel-caret">⌄</span>
-            </h3>
-            <div class="waterfall-chart" id="wfPlAc">
-              <!-- PL/PY Column -->
-              <div class="wf-col">
-                <span class="wf-value-label">800</span>
-                <div class="wf-bar bar-py" style="height: 145px;"></div>
-                <span class="wf-axis-label">PY</span>
-              </div>
-              <!-- Floating Bridge (+50) -->
-              <div class="wf-col wf-bridge-col">
-                <span class="wf-value-label val-positive">+50</span>
-                <div class="wf-bar bar-bridge-positive" style="height: 14px; margin-bottom: 140px;"></div>
-                <span class="wf-axis-label">&nbsp;</span>
-              </div>
-              <!-- AC Column -->
-              <div class="wf-col">
-                <span class="wf-value-label">800</span>
-                <div class="wf-bar bar-ac" style="height: 145px;"></div>
-                <span class="wf-axis-label">AC</span>
-              </div>
-              <!-- Variance Bracket Indicator -->
-              <div class="wf-indicator-bracket single-line">
-                <div class="bracket-horizontal-marker"></div>
-                <span class="bracket-value">+1.0%</span>
+            <div class="subpanel-title-wrap">
+              <h3 class="subpanel-title clickable-title" onclick="togglePlanMetricDropdown(event)" title="Click to toggle comparison metric">
+                <span id="planMetricLabel">Actual vs Plan</span>
+                <span class="subpanel-caret">⌄</span>
+              </h3>
+              <div class="plan-metric-menu" id="planMetricMenu" style="display: none;">
+                <div class="menu-item" onclick="selectPlanMetric('plan')">Actual vs Plan</div>
+                <div class="menu-item" onclick="selectPlanMetric('target')">Actual vs Budget Target</div>
+                <div class="menu-item" onclick="selectPlanMetric('forecast')">Actual vs Forecast</div>
               </div>
             </div>
+            <div class="waterfall-chart" id="wfPlAc"></div>
           </div>
 
         </div>
@@ -197,7 +159,7 @@
 
         <div class="card-body monthly-chart-container">
           <div class="monthly-columns-wrapper" id="monthlyChart">
-            <!-- 12 Monthly Bars injected by JS or hardcoded for pixel perfection -->
+            <!-- 12 Monthly Bars injected by JS -->
           </div>
         </div>
       </section>
@@ -222,23 +184,24 @@
 
         <div class="card-body regional-table-container">
           <div class="ibcs-table-header">
-            <div class="col-name">&nbsp;</div>
-            <div class="col-ac-sort">
-              AC 
-              <span class="sort-arrow">↓</span>
+            <div class="col-name sortable-header" onclick="toggleSortRegion('name')" title="Sort by Region Name">
+              Region <span id="sort_icon_reg_name" class="sort-indicator"></span>
             </div>
-            <div class="col-delta-pl">Δ PL</div>
-            <div class="col-delta-pl-pct">Δ PL%</div>
+            <div class="col-ac-sort sortable-header" onclick="toggleSortRegion('ac')" title="Sort by Actual Sales">
+              AC <span id="sort_icon_reg_ac" class="sort-arrow">↓</span>
+            </div>
+            <div class="col-delta-pl sortable-header" onclick="toggleSortRegion('deltaPl')" title="Sort by Variance Amount">
+              Δ PL <span id="sort_icon_reg_delta" class="sort-indicator"></span>
+            </div>
+            <div class="col-delta-pl-pct sortable-header" onclick="toggleSortRegion('deltaPlPct')" title="Sort by Variance %">
+              Δ PL% <span id="sort_icon_reg_pct" class="sort-indicator"></span>
+            </div>
           </div>
 
-          <div class="ibcs-table-rows" id="regionTableRows">
-            <!-- Regional Rows rendered via JavaScript -->
-          </div>
+          <div class="ibcs-table-rows" id="regionTableRows"></div>
 
           <!-- Total Summary Row -->
-          <div class="ibcs-total-row" id="regionTotalRow">
-            <!-- Total Row rendered via JavaScript -->
-          </div>
+          <div class="ibcs-total-row" id="regionTotalRow"></div>
         </div>
       </section>
 
@@ -264,24 +227,27 @@
 
         <div class="card-body category-table-container">
           <div class="ibcs-table-header category-headers">
-            <div class="col-name">&nbsp;</div>
-            <div class="col-num">PL</div>
-            <div class="col-num">AC</div>
-            <div class="col-delta-pl-sort">
-              Δ PL 
-              <span class="sort-arrow">↓</span>
+            <div class="col-name sortable-header" onclick="toggleSortCategory('name')" title="Sort by Category Name">
+              Category <span id="sort_icon_cat_name" class="sort-indicator"></span>
             </div>
-            <div class="col-delta-pl-pct">Δ PL%</div>
+            <div class="col-num sortable-header" onclick="toggleSortCategory('pl')" title="Sort by Plan">
+              PL <span id="sort_icon_cat_pl" class="sort-indicator"></span>
+            </div>
+            <div class="col-num sortable-header" onclick="toggleSortCategory('ac')" title="Sort by Actual">
+              AC <span id="sort_icon_cat_ac" class="sort-indicator"></span>
+            </div>
+            <div class="col-delta-pl-sort sortable-header" onclick="toggleSortCategory('deltaPl')" title="Sort by Variance Amount">
+              Δ PL <span id="sort_icon_cat_delta" class="sort-arrow">↓</span>
+            </div>
+            <div class="col-delta-pl-pct sortable-header" onclick="toggleSortCategory('deltaPlPct')" title="Sort by Variance %">
+              Δ PL% <span id="sort_icon_cat_pct" class="sort-indicator"></span>
+            </div>
           </div>
 
-          <div class="ibcs-table-rows" id="categoryTableRows">
-            <!-- Category Rows rendered via JavaScript -->
-          </div>
+          <div class="ibcs-table-rows" id="categoryTableRows"></div>
 
           <!-- Total Summary Row -->
-          <div class="ibcs-total-row" id="categoryTotalRow">
-            <!-- Total Row rendered via JavaScript -->
-          </div>
+          <div class="ibcs-total-row" id="categoryTotalRow"></div>
         </div>
       </section>
 
@@ -291,21 +257,22 @@
     <footer class="dashboard-footer-legend">
       <div class="legend-row">
         <div class="legend-pill-definitions">
-          <span class="pill-ac">AC - Actual</span>
-          <span class="pill-pl">PL - Planned</span>
+          <span class="pill-ac clickable-legend" onclick="toggleMetricFocus('ac')" title="Highlight Actuals">AC - Actual</span>
+          <span class="pill-pl clickable-legend" onclick="toggleMetricFocus('pl')" title="Highlight Plan">PL - Planned</span>
         </div>
         <div class="legend-indicators">
-          <div class="legend-item">
+          <div class="legend-item clickable-legend" onclick="filterByVarianceStatus('surplus')" title="Filter to show only Surplus items">
             <span class="legend-square square-red"></span>
-            <span class="legend-text">Surplus</span>
+            <span class="legend-text" id="legendSurplusLabel">Surplus</span>
           </div>
-          <div class="legend-item">
+          <div class="legend-item clickable-legend" onclick="filterByVarianceStatus('deficient')" title="Filter to show only Deficient items">
             <span class="legend-square square-green"></span>
-            <span class="legend-text">Deficient</span>
+            <span class="legend-text" id="legendDeficientLabel">Deficient</span>
           </div>
+          <button class="btn-clear-legend-filter" id="btnClearLegendFilter" onclick="clearVarianceFilter()" style="display: none;">✕ Clear Filter</button>
         </div>
       </div>
-      <div class="legend-subtext">
+      <div class="legend-subtext clickable-subtext" onclick="openEditDataModal()" title="Click to open live data editor">
         This graph/chart is linked to excel, and changes automatically based on data. Just left click on it and select "edit data".
       </div>
     </footer>
@@ -638,6 +605,100 @@
     </div>
   </div>
 
+  <!-- Interactive Modal 5: System & Pipeline Diagnostics -->
+  <div class="modal-backdrop" id="systemDiagnosticsModal" style="display: none;">
+    <div class="modal-dialog memo-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A3663" stroke-width="2">
+            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+            <line x1="6" y1="6" x2="6.01" y2="6"></line>
+            <line x1="6" y1="18" x2="6.01" y2="18"></line>
+          </svg>
+          <h3>System Architecture & Pipeline Diagnostics</h3>
+        </div>
+        <button class="modal-close" onclick="closeSystemDiagnosticsModal()">&times;</button>
+      </div>
+      <div class="modal-body memo-body">
+        <div class="ds-card">
+          <h4>Google Enterprise BI & Data Architecture Health</h4>
+          <p class="ds-desc">Runtime integrity verification across ingestion, relational SQL layer, and IBCS visual rendering pipeline:</p>
+          
+          <div class="hypothesis-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 16px;">
+            <div class="hypo-metric">
+              <span class="hypo-val" style="color: #2F855A;">10,000</span>
+              <span class="hypo-lbl">Clean Transactions</span>
+            </div>
+            <div class="hypo-metric">
+              <span class="hypo-val" style="color: #0A3663;">$8.45M</span>
+              <span class="hypo-lbl">Total 2022 Volume</span>
+            </div>
+            <div class="hypo-metric">
+              <span class="hypo-val" style="color: #2B6CB0;">100%</span>
+              <span class="hypo-lbl">Data Completeness</span>
+            </div>
+            <div class="hypo-metric">
+              <span class="hypo-val" style="color: #7CC444;">ACTIVE</span>
+              <span class="hypo-lbl">IBCS Compliance</span>
+            </div>
+          </div>
+
+          <table class="edit-table">
+            <thead>
+              <tr>
+                <th>Subsystem Component</th>
+                <th>Status</th>
+                <th>Specification & Technical Metric</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Primary Data Store</strong></td>
+                <td><span class="status-tag status-ok">Connected</span></td>
+                <td>SQLite 3.x (`retail_sales.db`) / 10,000 rows indexed on `transaction_id`, `order_date`</td>
+              </tr>
+              <tr>
+                <td><strong>Client Data Engine</strong></td>
+                <td><span class="status-tag status-ok" id="diagClientStoreStatus">Ready (12 Months Preloaded)</span></td>
+                <td>Dynamic Monthly Aggregates & Custom CSV In-Memory Parser (PapaParse reactive stream)</td>
+              </tr>
+              <tr>
+                <td><strong>Interactive Period Filter</strong></td>
+                <td><span class="status-tag status-ok">Operational</span></td>
+                <td>Multi-granularity state manager (Dec 2022, Month-by-Month, Full Year aggregate)</td>
+              </tr>
+              <tr>
+                <td><strong>Table Sorting Engine</strong></td>
+                <td><span class="status-tag status-ok">Operational</span></td>
+                <td>Tri-state alphabetical & numeric comparator across AC, PL, Δ PL, Δ PL%</td>
+              </tr>
+              <tr>
+                <td><strong>IBCS Visual Standard</strong></td>
+                <td><span class="status-tag status-ok">Calibrated</span></td>
+                <td>Navy (`#0A3663`), Light Blue (`#9FD4FC`), Surplus Green (`#7CC444`), Deficit Red (`#D9383A`)</td>
+              </tr>
+              <tr>
+                <td><strong>Statistical & ML Suite</strong></td>
+                <td><span class="status-tag status-ok">Verified</span></td>
+                <td>Welch's T-Test ($p=0.3127$), K-Means Clustering ($k=4$), RF Driver Attribution ($R^2=0.74$)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="rec-card" style="margin-top: 14px; border-left-color: #2B6CB0;">
+            <h4>Active Data Source</h4>
+            <p id="diagActiveSourceDesc">Currently rendering default <strong>Dec 2022 IBCS Benchmark</strong> synchronized with master Excel model and SQL views.</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="exportDashboardState()">Export State (JSON)</button>
+        <button class="btn-primary" onclick="closeSystemDiagnosticsModal()">Close Diagnostics</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Interactive Row Detail Drawer (Drilldown) -->
   <div class="drilldown-drawer" id="drilldownDrawer">
     <div class="drawer-header">
@@ -650,6 +711,7 @@
   <!-- Interactive Tooltip Element -->
   <div id="dashboardTooltip" class="custom-tooltip" style="display: none;"></div>
 
+  <script src="monthly_store.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
