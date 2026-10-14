@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Sales Reporting Dashboard with Revenue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation & Actions Bar (Discreet Google Senior Analyst Toolbar) -->
+  <header class="top-nav-bar">
+    <div class="brand-context">
+      <span class="badge-role">Google Analytics Standard</span>
+      <span class="project-tag">Project 1: Retail Sales Analysis</span>
+    </div>
+    <div class="nav-controls">
+      <div class="toggle-control" title="Toggle between raw mockup labels and real-world business names">
+        <label for="labelToggle" class="switch-label">View Mode:</label>
+        <button id="labelToggle" class="btn-toggle" onclick="toggleLabelMode()">
+          <span id="labelModeText">Template Labels (Region 1 / Cat 1)</span>
+        </button>
+      </div>
+      <button class="btn-action highlight-btn" onclick="openCsvUploadModal()" title="Upload any custom sales CSV file">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        Upload Custom CSV
+      </button>
+      <button class="btn-action ds-btn" onclick="openDataScienceModal()" title="View Data Science, Machine Learning & Hypothesis Testing">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        Data Science & ML
+      </button>
+      <button class="btn-action" onclick="openEditDataModal()" title="Simulate Excel Data Link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+        Edit Data (Excel Link)
+      </button>
+      <button class="btn-action" onclick="openExecutiveMemoModal()" title="View Senior Analyst Recommendations">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        Actionable Recommendations
+      </button>
+      <a href="../data/Retail_Sales_Model.xlsx" class="btn-action primary-btn" download title="Download linked master Excel workbook">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Download Excel
+      </a>
+    </div>
+  </header>
+
+  <!-- Dynamic Active Dataset Notification Banner -->
+  <div class="active-dataset-banner" id="activeDatasetBanner" style="display: none;">
+    <div class="banner-inner">
+      <div class="banner-info">
+        <span class="pulse-indicator"></span>
+        <strong id="bannerDatasetName">Custom CSV Active:</strong>
+        <span id="bannerDatasetDetails">Loaded from local file</span>
+      </div>
+      <div class="banner-actions">
+        <button class="btn-banner-reset" onclick="resetToDefaultData()">Reset to Image Default Benchmark</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Container (Exact Visual Replicant of Mockup Image) -->
+  <main class="dashboard-canvas">
+    
+    <!-- Top Header Bar matching image exactly -->
+    <div class="dashboard-main-header">
+      <div class="title-cluster">
+        <div class="window-control-icon">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <rect x="1" y="4" width="10" height="10" stroke="#718096" stroke-width="1.5" rx="1"/>
+            <path d="M5 4V2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2" stroke="#718096" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h1 class="main-dashboard-title">Product Sales Reporting Dashboard with Revenue</h1>
+      </div>
+      
+      <div class="header-right-filter">
+        <div class="filter-dropdown" id="periodFilter">
+          <span class="filter-label">Dec 2022</span>
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="#4A5568" stroke-width="1.5">
+            <path d="M1 1L5 5L9 1"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2x2 Quadrant Grid Layout -->
+    <div class="quadrant-grid">
+
+      <!-- ================================================================= -->
+      <!-- CARD 1 (Top-Left): Yearly Revenue Generated                      -->
+      <!-- ================================================================= -->
+      <section class="dashboard-card card-top-left" id="cardYearlyRevenue">
+        <div class="card-header">
+          <div class="header-left">
+            <div class="card-icon icon-chart">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B6CB0" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+                <path d="M4 14l6-6 4 4 6-6"></path>
+              </svg>
+            </div>
+            <h2 class="card-title">Yearly Revenue Generated</h2>
+          </div>
+          <div class="header-divider-line"></div>
+        </div>
+
+        <div class="card-body dual-waterfall-container">
+          
+          <!-- Sub-Chart 1: Actual vs Previous Year -->
+          <div class="waterfall-subpanel">
+            <h3 class="subpanel-title">Actual vs Previous Year</h3>
+            <div class="waterfall-chart" id="wfPyAc">
+              <!-- PY Column -->
+              <div class="wf-col">
+                <span class="wf-value-label">600</span>
+                <div class="wf-bar bar-py" style="height: 110px;"></div>
+                <span class="wf-axis-label">PY</span>
+              </div>
+              <!-- Floating Bridge (+400) -->
+              <div class="wf-col wf-bridge-col">
+                <span class="wf-value-label val-positive">+400</span>
+                <div class="wf-bar bar-bridge-positive" style="height: 48px; margin-bottom: 95px;"></div>
+                <span class="wf-axis-label">&nbsp;</span>
+              </div>
+              <!-- AC Column -->
+              <div class="wf-col">
+                <span class="wf-value-label">800</span>
+                <div class="wf-bar bar-ac" style="height: 145px;"></div>
+                <span class="wf-axis-label">AC</span>
+              </div>
+              <!-- Variance Bracket Indicator -->
+              <div class="wf-indicator-bracket">
+                <div class="bracket-line"></div>
+                <span class="bracket-value">+65.5%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-Chart 2: Actual vs Plan -->
+          <div class="waterfall-subpanel">
+            <h3 class="subpanel-title">
+              Actual vs Plan
+              <span class="subpanel-caret">⌄</span>
+            </h3>
+            <div class="waterfall-chart" id="wfPlAc">
+              <!-- PL/PY Column -->
+              <div class="wf-col">
+                <span class="wf-value-label">800</span>
+                <div class="wf-bar bar-py" style="height: 145px;"></div>
+                <span class="wf-axis-label">PY</span>
+              </div>
+              <!-- Floating Bridge (+50) -->
+              <div class="wf-col wf-bridge-col">
+                <span class="wf-value-label val-positive">+50</span>
+                <div class="wf-bar bar-bridge-positive" style="height: 14px; margin-bottom: 140px;"></div>
+                <span class="wf-axis-label">&nbsp;</span>
+              </div>
+              <!-- AC Column -->
+              <div class="wf-col">
+                <span class="wf-value-label">800</span>
+                <div class="wf-bar bar-ac" style="height: 145px;"></div>
+                <span class="wf-axis-label">AC</span>
+              </div>
+              <!-- Variance Bracket Indicator -->
+              <div class="wf-indicator-bracket single-line">
+                <div class="bracket-horizontal-marker"></div>
+                <span class="bracket-value">+1.0%</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- CARD 2 (Top-Right): Monthly Sales                                 -->
+      <!-- ================================================================= -->
+      <section class="dashboard-card card-top-right" id="cardMonthlySales">
+        <div class="card-header">
+          <div class="header-left">
+            <div class="card-icon icon-calendar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2B6CB0" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </div>
+            <h2 class="card-title">Monthly Sales</h2>
+          </div>
+          <div class="header-divider-line with-center-dot"></div>
+        </div>
+
+        <div class="card-body monthly-chart-container">
+          <div class="monthly-columns-wrapper" id="monthlyChart">
+            <!-- 12 Monthly Bars injected by JS or hardcoded for pixel perfection -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- CARD 3 (Bottom-Left): Sales – Region                              -->
+      <!-- ================================================================= -->
+      <section class="dashboard-card card-bottom-left" id="cardSalesRegion">
+        <div class="card-header">
+          <div class="header-left">
+            <div class="card-icon icon-boxes">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A5568" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+            </div>
+            <h2 class="card-title">Sales – Region</h2>
+          </div>
+          <div class="header-divider-line with-center-dot"></div>
+        </div>
+
+        <div class="card-body regional-table-container">
+          <div class="ibcs-table-header">
+            <div class="col-name">&nbsp;</div>
+            <div class="col-ac-sort">
+              AC 
+              <span class="sort-arrow">↓</span>
+            </div>
+            <div class="col-delta-pl">Δ PL</div>
+            <div class="col-delta-pl-pct">Δ PL%</div>
+          </div>
+
+          <div class="ibcs-table-rows" id="regionTableRows">
+            <!-- Regional Rows rendered via JavaScript -->
+          </div>
+
+          <!-- Total Summary Row -->
+          <div class="ibcs-total-row" id="regionTotalRow">
+            <!-- Total Row rendered via JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- CARD 4 (Bottom-Right): Sales – Product Category                   -->
+      <!-- ================================================================= -->
+      <section class="dashboard-card card-bottom-right" id="cardSalesCategory">
+        <div class="card-header">
+          <div class="header-left">
+            <div class="card-icon icon-factory">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A5568" stroke-width="2">
+                <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+                <path d="M18 16h.01"></path>
+                <path d="M14 16h.01"></path>
+                <path d="M10 16h.01"></path>
+                <path d="M6 16h.01"></path>
+              </svg>
+            </div>
+            <h2 class="card-title">Sales – Product Category</h2>
+          </div>
+          <div class="header-divider-line with-center-dot"></div>
+        </div>
+
+        <div class="card-body category-table-container">
+          <div class="ibcs-table-header category-headers">
+            <div class="col-name">&nbsp;</div>
+            <div class="col-num">PL</div>
+            <div class="col-num">AC</div>
+            <div class="col-delta-pl-sort">
+              Δ PL 
+              <span class="sort-arrow">↓</span>
+            </div>
+            <div class="col-delta-pl-pct">Δ PL%</div>
+          </div>
+
+          <div class="ibcs-table-rows" id="categoryTableRows">
+            <!-- Category Rows rendered via JavaScript -->
+          </div>
+
+          <!-- Total Summary Row -->
+          <div class="ibcs-total-row" id="categoryTotalRow">
+            <!-- Total Row rendered via JavaScript -->
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Bottom Footer Legend matching the image exactly -->
+    <footer class="dashboard-footer-legend">
+      <div class="legend-row">
+        <div class="legend-pill-definitions">
+          <span class="pill-ac">AC - Actual</span>
+          <span class="pill-pl">PL - Planned</span>
+        </div>
+        <div class="legend-indicators">
+          <div class="legend-item">
+            <span class="legend-square square-red"></span>
+            <span class="legend-text">Surplus</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-square square-green"></span>
+            <span class="legend-text">Deficient</span>
+          </div>
+        </div>
+      </div>
+      <div class="legend-subtext">
+        This graph/chart is linked to excel, and changes automatically based on data. Just left click on it and select "edit data".
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Interactive Modal 1: Edit Data (Excel Link Simulator) -->
+  <div class="modal-backdrop" id="editDataModal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A3663" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <h3>Linked Excel Data Sheet - Edit Live Values</h3>
+        </div>
+        <button class="modal-close" onclick="closeEditDataModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">
+          This editor simulates the Excel data link specified in the dashboard footer. Modify any actual or planned values below, then click <strong>Apply Live Changes</strong> to see the dashboard recalculate all variances, bars, and pin indicators dynamically in real time.
+        </p>
+        
+        <div class="modal-tabs">
+          <button class="tab-btn active" onclick="switchModalTab('tabCategories')">Product Categories</button>
+          <button class="tab-btn" onclick="switchModalTab('tabRegions')">Regions</button>
+          <button class="tab-btn" onclick="switchModalTab('tabMonthly')">Monthly Sales (2022)</button>
+        </div>
+
+        <div class="tab-content" id="tabCategories">
+          <table class="edit-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Plan ($K)</th>
+                <th>Actual ($K)</th>
+              </tr>
+            </thead>
+            <tbody id="editCategoryBody"></tbody>
+          </table>
+        </div>
+
+        <div class="tab-content" id="tabRegions" style="display: none;">
+          <table class="edit-table">
+            <thead>
+              <tr>
+                <th>Region</th>
+                <th>Plan ($K)</th>
+                <th>Actual ($K)</th>
+              </tr>
+            </thead>
+            <tbody id="editRegionBody"></tbody>
+          </table>
+        </div>
+
+        <div class="tab-content" id="tabMonthly" style="display: none;">
+          <table class="edit-table">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Plan ($K)</th>
+                <th>Actual ($K)</th>
+              </tr>
+            </thead>
+            <tbody id="editMonthlyBody"></tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="resetToDefaultData()">Reset to Image Defaults</button>
+        <button class="btn-primary" onclick="saveAndApplyData()">Apply Live Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Modal 2: Senior Analyst Recommendations Memo -->
+  <div class="modal-backdrop" id="executiveMemoModal" style="display: none;">
+    <div class="modal-dialog memo-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A3663" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+          <h3>Executive Memo: 5 High-Impact Actionable Recommendations</h3>
+        </div>
+        <button class="modal-close" onclick="closeExecutiveMemoModal()">&times;</button>
+      </div>
+      <div class="modal-body memo-body">
+        <div class="memo-summary-banner">
+          <div class="banner-stat">
+            <span class="stat-number">+$780K – $925K</span>
+            <span class="stat-label">Projected Top-line Expansion</span>
+          </div>
+          <div class="banner-stat">
+            <span class="stat-number">+$255,000+</span>
+            <span class="stat-label">Preserved Gross Profit Margin</span>
+          </div>
+          <div class="banner-stat">
+            <span class="stat-number">+180 bps</span>
+            <span class="stat-label">Target Gross Margin Expansion</span>
+          </div>
+        </div>
+
+        <div class="recommendations-list">
+          <article class="rec-card">
+            <div class="rec-badge">Rec 1: EMEA Central Turnaround</div>
+            <h4>Fix EMEA Central (Region 3) Deficit (-15.0% / -$29K in Dec)</h4>
+            <p><strong>Root Cause:</strong> Over-reliance on traditional distributor channels during European CapEx freezes.</p>
+            <p><strong>Action:</strong> Reallocate 30% of marketing to direct digital sales, introduce flexible Net-60/90 terms, and realign territory quotas.</p>
+            <div class="rec-impact">Financial Impact: <strong>+$180K to +$240K</strong> annualized revenue recovery.</div>
+          </article>
+
+          <article class="rec-card">
+            <div class="rec-badge">Rec 2: SaaS Transition</div>
+            <h4>Pivot Category 7 (Office Tech & Software, -24.0%) to Recurring ARR</h4>
+            <p><strong>Root Cause:</strong> Selling lumpy perpetual licenses vulnerable to budget cuts vs Category 8 Care Plans (75% margin).</p>
+            <p><strong>Action:</strong> Sunset one-off licenses; mandate Category 8 subscription bundles on all enterprise hardware sales.</p>
+            <div class="rec-impact">Financial Impact: <strong>+$110,000</strong> gross profit, <strong>+180 bps</strong> margin expansion.</div>
+          </article>
+
+          <article class="rec-card">
+            <div class="rec-badge">Rec 3: High-Velocity Logistics</div>
+            <h4>Forward-Stage Inventory to Surging APAC (+21.0%) and LATAM (+17.9%)</h4>
+            <p><strong>Root Cause:</strong> Inventory safety stocks sat idle in North America West while Tokyo and São Paulo suffered stockouts.</p>
+            <p><strong>Action:</strong> Shift 15% of regional warehouse buffers to APAC and LATAM distribution centers.</p>
+            <div class="rec-impact">Financial Impact: Capture an estimated <strong>+$320,000</strong> in unfulfilled demand.</div>
+          </article>
+
+          <article class="rec-card">
+            <div class="rec-badge">Rec 4: Margin Protection</div>
+            <h4>Automated CPQ Discount Governance Matrix (Stop Margin Leakage)</h4>
+            <p><strong>Root Cause:</strong> Discounts &gt;10% penalize gross margin by 590 to 731 bps with zero incremental basket lift.</p>
+            <p><strong>Action:</strong> Implement strict CPQ authorization gates (rep capped at 5%, Director at 10%, VP Finance for &gt;10%) and align rep bonuses with gross profit dollars.</p>
+            <div class="rec-impact">Financial Impact: <strong>+$145,000+</strong> direct margin preservation.</div>
+          </article>
+
+          <article class="rec-card">
+            <div class="rec-badge">Rec 5: Seasonality Management</div>
+            <h4>Smooth "Summer Slump" (May–Sep) & Calibrate 2023 AOP Seasonality Curve</h4>
+            <p><strong>Root Cause:</strong> Sales drop 47% between May ($810K) and Sep ($430K); May plan was unrealistically over-budgeted at $1,157K.</p>
+            <p><strong>Action:</strong> Launch Mid-Year Enterprise Hardware Refresh campaign in July/August and anchor 2023 budget curves to trailing empirical indices.</p>
+            <div class="rec-impact">Financial Impact: <strong>+$250,000</strong> summer revenue lift and eliminate forecast panic.</div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Modal 3: Custom CSV Upload & Data Ingestion -->
+  <div class="modal-backdrop" id="csvUploadModal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A3663" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <h3>Upload & Analyze Custom Sales CSV</h3>
+        </div>
+        <button class="modal-close" onclick="closeCsvUploadModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">
+          Upload any retail transactions CSV to dynamically recalculate the dashboard metrics, monthly variances, regional bars, and category performance in real time.
+        </p>
+
+        <!-- Drag and Drop Area -->
+        <div class="csv-drop-zone" id="csvDropZone" onclick="document.getElementById('csvFileInput').click()">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m16 16-4-4-4 4"></path></svg>
+          <h4>Drop your CSV file here or <span class="browse-link">Browse files</span></h4>
+          <p class="drop-subtext">Supports files with date, sales/revenue, category, and region columns</p>
+          <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="handleFileSelect(event)">
+        </div>
+
+        <div id="fileUploadStatus" class="upload-status" style="display: none;"></div>
+
+        <!-- Quick Dataset Presets -->
+        <div class="preset-section">
+          <label class="preset-label">Or choose a pre-loaded dataset scenario:</label>
+          <div class="preset-buttons">
+            <button class="btn-preset" onclick="loadPreloadedScenario('clean')">
+              <strong>Master Clean Sales Log</strong>
+              <span>11,491 enterprise records (2021-2022)</span>
+            </button>
+            <button class="btn-preset" onclick="loadPreloadedScenario('benchmark')">
+              <strong>Image Benchmark Default</strong>
+              <span>Exact figures matching visual mockup</span>
+            </button>
+            <button class="btn-preset" onclick="loadPreloadedScenario('high_growth')">
+              <strong>High-Growth Tech Scenario</strong>
+              <span>Simulated Q4 surge (+35% surplus)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Template Download Link -->
+        <div class="template-download-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4B5563" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span>Need the proper CSV format? <a href="../data/retail_sales_template.csv" download class="template-link">Download Sample CSV Template</a></span>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeCsvUploadModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Modal 4: Data Science & Machine Learning Insights -->
+  <div class="modal-backdrop" id="dataScienceModal" style="display: none;">
+    <div class="modal-dialog memo-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A3663" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <h3>Data Science & Machine Learning Intelligence</h3>
+        </div>
+        <button class="modal-close" onclick="closeDataScienceModal()">&times;</button>
+      </div>
+      <div class="modal-body memo-body">
+        
+        <div class="modal-tabs">
+          <button class="tab-btn active" onclick="switchDsTab('tabForecast')">Time Series Forecast (2023)</button>
+          <button class="tab-btn" onclick="switchDsTab('tabRfm')">K-Means Customer Clusters</button>
+          <button class="tab-btn" onclick="switchDsTab('tabHypothesis')">A/B Hypothesis Testing</button>
+          <button class="tab-btn" onclick="switchDsTab('tabImportance')">ML Driver Attribution</button>
+        </div>
+
+        <!-- Tab 1: Forecasting -->
+        <div class="tab-content" id="tabForecast">
+          <div class="ds-card">
+            <h4>2023 Q1 & Q2 Revenue Forecast (Linear Trend + Empirical Seasonality)</h4>
+            <p class="ds-desc">Trained on trailing 24-month sales history with 95% confidence intervals ($z = 1.96$):</p>
+            <table class="edit-table" style="margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th>Forecast Period</th>
+                  <th>Predicted Sales</th>
+                  <th>95% Confidence Interval</th>
+                  <th>Seasonal Factor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Jan 2023</strong></td><td>$749.5K</td><td>$477.3K – $1,021.8K</td><td>+7.8%</td></tr>
+                <tr><td><strong>Feb 2023</strong></td><td>$672.9K</td><td>$400.7K – $945.2K</td><td>-3.2%</td></tr>
+                <tr><td><strong>Mar 2023</strong></td><td>$912.1K</td><td>$639.9K – $1,184.3K</td><td>+31.2%</td></tr>
+                <tr><td><strong>Apr 2023</strong></td><td>$1,000.8K</td><td>$728.5K – $1,273.0K</td><td>+43.9%</td></tr>
+                <tr><td><strong>May 2023</strong></td><td>$1,023.0K</td><td>$750.8K – $1,295.2K</td><td>+47.1%</td></tr>
+                <tr><td><strong>Jun 2023</strong></td><td>$761.3K</td><td>$489.1K – $1,033.6K</td><td>+9.5%</td></tr>
+              </tbody>
+            </table>
+            <div class="rec-impact" style="margin-top: 12px;">Model Takeaway: Q1 2023 is projected to deliver <strong>$2.33M in sales</strong>, a <strong>+18.5% YoY lift</strong> over Q1 2022.</div>
+          </div>
+        </div>
+
+        <!-- Tab 2: RFM Clusters -->
+        <div class="tab-content" id="tabRfm" style="display: none;">
+          <div class="ds-card">
+            <h4>Unsupervised K-Means Customer Segmentation (Silhouette Score: 0.314)</h4>
+            <p class="ds-desc">Segmented accounts based on Recency (days), Order Frequency, Monetary Spend, and AOV:</p>
+            <table class="edit-table" style="margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th>Customer Segment</th>
+                  <th>Accounts</th>
+                  <th>Avg Spend</th>
+                  <th>Avg Recency</th>
+                  <th>Revenue Share</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Tier-1 Champions</strong></td><td>368</td><td>$11,209</td><td>24 days</td><td><strong>30.2%</strong></td></tr>
+                <tr><td><strong>Loyal Core Customers</strong></td><td>914</td><td>$5,866</td><td>48 days</td><td><strong>39.3%</strong></td></tr>
+                <tr><td><strong>Occasional Buyers</strong></td><td>1,362</td><td>$2,282</td><td>82 days</td><td><strong>22.8%</strong></td></tr>
+                <tr><td><strong>At-Risk / Lapsed</strong></td><td>735</td><td>$1,426</td><td>165 days</td><td><strong>7.7%</strong></td></tr>
+              </tbody>
+            </table>
+            <div class="rec-impact" style="margin-top: 12px;">Strategic Playbook: <strong>Top 38% of customers (Champions + Loyalists) drive 69.5% of total enterprise revenue</strong>. Allocate dedicated VIP Account Managers.</div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Hypothesis Testing -->
+        <div class="tab-content" id="tabHypothesis" style="display: none;">
+          <div class="ds-card">
+            <h4>A/B Hypothesis Test: Promotional Discount Elasticity</h4>
+            <p class="ds-desc">Two-Sample Welch's T-Test testing if promotional discounts (&gt;10%) drive higher unit volume per order:</p>
+            <div class="hypothesis-grid">
+              <div class="hypo-metric">
+                <span class="hypo-val">2.33</span>
+                <span class="hypo-lbl">Low/No Discount Units (&le;5%)</span>
+              </div>
+              <div class="hypo-metric">
+                <span class="hypo-val">2.27</span>
+                <span class="hypo-lbl">Deep Discount Units (&gt;10%)</span>
+              </div>
+              <div class="hypo-metric">
+                <span class="hypo-val">p = 0.3127</span>
+                <span class="hypo-lbl">p-value (&gt; 0.05 threshold)</span>
+              </div>
+              <div class="hypo-metric">
+                <span class="hypo-val">-0.033</span>
+                <span class="hypo-lbl">Cohen's d Effect Size</span>
+              </div>
+            </div>
+            <div class="rec-card" style="margin-top: 14px; border-left-color: #D9383A;">
+              <h4>Scientific Conclusion: Fail to Reject Null Hypothesis ($H_0$)</h4>
+              <p>With $p = 0.3127 \gg 0.05$, there is <strong>no statistically significant evidence</strong> that discounts >10% stimulate unit volume. Deep discounting represents pure gross margin leakage.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Feature Importance -->
+        <div class="tab-content" id="tabImportance" style="display: none;">
+          <div class="ds-card">
+            <h4>Random Forest Regressor: Drivers of Profit Margin Variation</h4>
+            <p class="ds-desc">Gini impurity feature importance attributing operational drivers of operating gross margin:</p>
+            <table class="edit-table" style="margin-top: 10px;">
+              <thead>
+                <tr>
+                  <th>Feature Lever</th>
+                  <th>Relative Importance</th>
+                  <th>Impact Mechanism</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Category: Subscriptions & Care</strong></td><td><strong>68.0%</strong></td><td>High-margin recurring ARR (75% margin baseline)</td></tr>
+                <tr><td><strong>Unit Selling Price</strong></td><td><strong>14.3%</strong></td><td>Higher price tiers absorb fixed packaging and shipping costs</td></tr>
+                <tr><td><strong>Category: Office Tech & Software</strong></td><td><strong>8.9%</strong></td><td>Enterprise software licensing margin contribution</td></tr>
+                <tr><td><strong>Discretionary Discount %</strong></td><td><strong>3.4%</strong></td><td>Direct negative coefficient on realized margin</td></tr>
+                <tr><td><strong>Order Quantity</strong></td><td><strong>2.7%</strong></td><td>Scale efficiency on multi-unit shipments</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Row Detail Drawer (Drilldown) -->
+  <div class="drilldown-drawer" id="drilldownDrawer">
+    <div class="drawer-header">
+      <h3 id="drawerTitle">Entity Drilldown Details</h3>
+      <button class="drawer-close" onclick="closeDrilldownDrawer()">&times;</button>
+    </div>
+    <div class="drawer-content" id="drawerContent"></div>
+  </div>
+
+  <!-- Interactive Tooltip Element -->
+  <div id="dashboardTooltip" class="custom-tooltip" style="display: none;"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

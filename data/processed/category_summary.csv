@@ -1,0 +1,9 @@
+Category_Code,Category_Name,Planned_Sales_K,Actual_Sales_K,Delta_PL_K,Delta_PL_Pct
+Category 1,Electronics & Laptops,290.0,315.0,20.0,17.0
+Category 2,Mobile & Tablets,80.0,97.0,15.0,21.0
+Category 3,Smart Home & IoT,35.0,41.0,5.0,17.0
+Category 4,Audio & Headphones,47.0,40.0,-5.0,-13.0
+Category 5,Gaming & VR Consoles,80.0,75.0,-5.0,-8.0
+Category 6,Peripherals & Accessories,145.0,139.0,-5.0,-5.0
+Category 7,Office Tech & Software,90.0,65.0,-22.0,-24.0
+Category 8,Subscriptions & Care Plans,190.0,190.0,-2.0,-1.5

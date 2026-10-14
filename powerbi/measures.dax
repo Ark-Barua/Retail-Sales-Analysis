@@ -1,0 +1,173 @@
+/* ==============================================================================
+   Power BI DAX Measures Library - Retail Sales & Profitability Model
+   Author: Senior Data Analyst (Google BI Standard)
+   Model Pattern: Star Schema (FactSales, DimDate, DimProduct, DimRegion, DimCustomer)
+   ============================================================================== */
+
+// ------------------------------------------------------------------------------
+// 1. BASE REVENUE & COST MEASURES
+// ------------------------------------------------------------------------------
+
+Total Gross Sales = 
+SUM(fact_sales[gross_sales])
+
+Total Discounts = 
+SUM(fact_sales[discount_amount])
+
+Total Net Revenue = 
+SUM(fact_sales[net_revenue])
+
+Total COGS = 
+SUM(fact_sales[cogs])
+
+Total Gross Profit = 
+[Total Net Revenue] - [Total COGS]
+
+Gross Margin % = 
+DIVIDE([Total Gross Profit], [Total Net Revenue], 0)
+
+Total Order Volume = 
+DISTINCTCOUNT(fact_sales[order_id])
+
+Total Units Sold = 
+SUM(fact_sales[quantity])
+
+Average Order Value (AOV) = 
+DIVIDE([Total Net Revenue], [Total Order Volume], 0)
+
+Average Selling Price (ASP) = 
+DIVIDE([Total Net Revenue], [Total Units Sold], 0)
+
+
+// ------------------------------------------------------------------------------
+// 2. BUDGET / PLAN BENCHMARK MEASURES
+// ------------------------------------------------------------------------------
+
+Planned Revenue = 
+SUM(dim_monthly_performance[Planned_Sales_K]) * 1000
+
+Planned Regional Revenue = 
+SUM(dim_regional_performance[Planned_Sales_K]) * 1000
+
+Planned Category Revenue = 
+SUM(dim_category_performance[Planned_Sales_K]) * 1000
+
+
+// ------------------------------------------------------------------------------
+// 3. VARIANCE MEASURES (IBCS STANDARDS: DELTA PL & DELTA PL %)
+// ------------------------------------------------------------------------------
+
+Revenue Variance (Delta PL) = 
+[Total Net Revenue] - [Planned Revenue]
+
+Revenue Variance % (Delta PL %) = 
+DIVIDE([Revenue Variance (Delta PL)], [Planned Revenue], 0)
+
+Variance Status Icon = 
+IF(
+    [Revenue Variance (Delta PL)] >= 0,
+    "▲ Surplus",
+    "▼ Deficit"
+)
+
+Variance Status Color = 
+IF(
+    [Revenue Variance (Delta PL)] >= 0,
+    "#7CC444", -- Favorable Green
+    "#D9383A"  -- Unfavorable Red
+)
+
+
+// ------------------------------------------------------------------------------
+// 4. PRIOR YEAR (PY) & TIME INTELLIGENCE MEASURES
+// ------------------------------------------------------------------------------
+
+Prior Year Revenue (PY) = 
+CALCULATE(
+    [Total Net Revenue],
+    SAMEPERIODLASTYEAR(dim_date[Date])
+)
+
+YoY Revenue Growth = 
+[Total Net Revenue] - [Prior Year Revenue (PY)]
+
+YoY Revenue Growth % = 
+DIVIDE([YoY Revenue Growth], [Prior Year Revenue (PY)], 0)
+
+YTD Net Revenue = 
+TOTALYTD([Total Net Revenue], dim_date[Date])
+
+YTD Planned Revenue = 
+TOTALYTD([Planned Revenue], dim_date[Date])
+
+YTD Revenue Variance = 
+[YTD Net Revenue] - [YTD Planned Revenue]
+
+YTD Revenue Variance % = 
+DIVIDE([YTD Revenue Variance], [YTD Planned Revenue], 0)
+
+Trailing 3M Revenue = 
+CALCULATE(
+    [Total Net Revenue],
+    DATESINPERIOD(dim_date[Date], MAX(dim_date[Date]), -3, MONTH)
+)
+
+Trailing 3M Moving Average = 
+DIVIDE([Trailing 3M Revenue], 3, 0)
+
+
+// ------------------------------------------------------------------------------
+// 5. PARETO & RANKING MEASURES
+// ------------------------------------------------------------------------------
+
+Product Rank by Revenue = 
+RANKX(
+    ALLSELECTED(dim_product[category_name]),
+    [Total Net Revenue],
+    ,
+    DESC,
+    Dense
+)
+
+Cumulative Category Revenue = 
+VAR CurrentRev = [Total Net Revenue]
+VAR AllCategories = ALLSELECTED(dim_product[category_name])
+RETURN
+CALCULATE(
+    [Total Net Revenue],
+    FILTER(
+        AllCategories,
+        [Total Net Revenue] >= CurrentRev
+    )
+)
+
+Pareto Cumulative Revenue % = 
+DIVIDE(
+    [Cumulative Category Revenue],
+    CALCULATE([Total Net Revenue], ALLSELECTED(dim_product[category_name])),
+    0
+)
+
+
+// ------------------------------------------------------------------------------
+// 6. DISCOUNT ELASTICITY & GOVERNANCE MEASURES
+// ------------------------------------------------------------------------------
+
+Average Discount Rate % = 
+AVERAGE(fact_sales[discount_pct])
+
+Margin Dilution vs Full Price % = 
+VAR FullPriceMargin = 
+    CALCULATE(
+        [Gross Margin %],
+        fact_sales[discount_pct] = 0
+    )
+RETURN
+[Gross Margin %] - FullPriceMargin
+
+Discount Revenue Share % = 
+DIVIDE(
+    CALCULATE([Total Net Revenue], fact_sales[discount_pct] > 0),
+    [Total Net Revenue],
+    0
+)

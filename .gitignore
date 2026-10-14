@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.ipynb_checkpoints
+
+# Environments
+env/
+venv/
+ENV/
+
+# System / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+
+# System Generated Background Tasks
+.system_generated/

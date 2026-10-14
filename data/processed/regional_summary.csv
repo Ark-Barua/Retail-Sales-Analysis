@@ -1,0 +1,8 @@
+Region_Code,Region_Name,Actual_Sales_K,Planned_Sales_K,Delta_PL_K,Delta_PL_Pct
+Region 1,North America West,261.0,272.0,-11.0,-5.7
+Region 2,North America East,193.0,176.0,17.0,5.0
+Region 3,EMEA Central,179.0,208.0,-29.0,-15.0
+Region 4,APAC North,97.0,80.0,17.0,21.0
+Region 5,LATAM South,93.0,81.0,12.0,17.9
+Region 6,UK & Ireland,82.0,81.0,1.0,0.7
+Region 7,Emerging Markets,55.0,51.0,4.0,5.7
